@@ -18,11 +18,17 @@ PITCH = (
 OUTPUT_PATH = "/output/entry.txt"
 
 
-def main() -> None:
-    if not (1 <= len(PITCH) <= 220):
-        raise SystemExit(f"pitch is {len(PITCH)} chars, must be 1-220")
-    if PITCH.count(".") != 1 or not PITCH.endswith("."):
+def validate(pitch: str) -> None:
+    if not (1 <= len(pitch) <= 220):
+        raise SystemExit(f"pitch is {len(pitch)} chars, must be 1-220")
+    if "\n" in pitch:
+        raise SystemExit("pitch must fit on a single line")
+    if pitch.count(".") != 1 or not pitch.endswith("."):
         raise SystemExit("pitch must be exactly one sentence")
+
+
+def main() -> None:
+    validate(PITCH)
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         f.write(PITCH)
